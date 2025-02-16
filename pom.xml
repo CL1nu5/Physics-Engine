@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>src</groupId>
+    <artifactId>Physics-Engine</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Physics-Engine</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <!-- change source, test, resource and test-resource folder-->
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>resources</directory>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>custom-test-resources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
+    <dependencies>
+
+        <!-- Unit Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Logging -->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+
+    </dependencies>
+</project>
