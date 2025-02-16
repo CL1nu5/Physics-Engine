@@ -5,13 +5,10 @@ import PhysicObjects2D.Vector2D;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
 
 public class TestVector2D extends TestCase {
-
-    private static final Logger logger = LogManager.getLogger(TestVector2D.class);
 
     /* setup */
 
@@ -39,6 +36,25 @@ public class TestVector2D extends TestCase {
         //but the still should be equal (hae the same values)
         assertEquals(original, clone);
     }
+
+    //tests cloning an array of vectors
+    public void testCloningMultiple() {
+        //test setup
+        Vector2D[] vectors = {new Vector2D(2,5), new Vector2D(-1.4, 1.3), new Vector2D(100.32, -129836.3)};
+
+        //cloning
+        Vector2D[] clone = Arrays.stream(vectors).map(Vector2D::clone).toArray(Vector2D[]::new);
+
+        //test array not being the same reference
+        assertNotSame(vectors, clone);
+
+        //test values not being the same reference, but still having the same value
+        for (int i = 0; i < vectors.length; i++){
+            assertNotSame(vectors[i], clone[i]);
+            assertEquals(vectors[i], clone[i]);
+        }
+    }
+
 
     //test if the equals function works
     public void testEquals() {
@@ -104,4 +120,26 @@ public class TestVector2D extends TestCase {
         assertEquals(3.0, case3.getDistance());
     }
 
+    //test the addition method
+    public void testAdd() {
+        //test setup
+        Vector2D vector1 = new Vector2D(3, 5);
+        Vector2D vector2 = new Vector2D(2, 1);
+
+        //test
+        assertEquals(new Vector2D(5, 6), vector1.add(vector2));
+    }
+
+    //test the subtraction method
+    public void testSub() {
+        //test setup
+        Vector2D vector1 = new Vector2D(3, 5);
+        Vector2D vector2 = new Vector2D(2, 1);
+
+        //test1
+        assertEquals(new Vector2D(1, 4), vector1.sub(vector2));
+
+        //test2 (other order)
+        assertEquals(new Vector2D(-1, -4), vector2.sub(vector1));
+    }
 }

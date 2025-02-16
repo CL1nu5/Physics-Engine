@@ -37,6 +37,20 @@ public class Vector2D implements Cloneable {
         return Math.sqrt(x * x + y * y);
     }
 
+    //returns a new vector based on the addition of both vectors
+    public Vector2D add(Vector2D that) {
+        return new Vector2D(this.x + that.x, this.y + that.y);
+    }
+
+    //returns a new vector based on the subtraction of the second vector from this vector
+    public Vector2D sub(Vector2D that) {
+        return new Vector2D(this.x - that.x, this.y - that.y);
+    }
+
+    //makes the dot product of two vectors
+    public double mul(Vector2D that) {
+        return (this.x * that.x) + (this.y * that.y);
+    }
 
     /* basic methods */
 
