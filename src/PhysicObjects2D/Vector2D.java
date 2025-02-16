@@ -23,11 +23,18 @@ public class Vector2D implements Cloneable {
 
     //returns the vector normalized
     public Vector2D normalize() {
-        double magnitude = Math.sqrt(x * x + y * y);
+        double magnitude = getDistance();
+
         if (magnitude == 0) {
             return new Vector2D(0, 0);
         }
+
         return new Vector2D(x / magnitude, y / magnitude);
+    }
+
+    //returns distance/magnitude
+    public double getDistance() {
+        return Math.sqrt(x * x + y * y);
     }
 
 
@@ -62,6 +69,6 @@ public class Vector2D implements Cloneable {
     //returns a string of the vector: [x="x-value";y="y-value"]
     @Override
     public String toString() {
-        return "[x=" + x + ";y=" + y + "y]";
+        return "[x=" + x + ";y=" + y + "]";
     }
 }

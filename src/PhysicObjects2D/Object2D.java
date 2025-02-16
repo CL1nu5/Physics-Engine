@@ -6,7 +6,7 @@ public abstract class Object2D {
 
     protected int x, y;
 
-    /* constructor */
+    /* constructors */
 
     public Object2D(int x, int y) {
         this.x = x;
