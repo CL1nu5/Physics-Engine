@@ -7,7 +7,7 @@ public abstract class Object2D implements Cloneable {
 
     /* values */
 
-    protected Vector2D position, velocity;
+    public Vector2D position, velocity;
     protected double scale, rotation;
 
     /* constructors */

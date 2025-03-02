@@ -96,6 +96,11 @@ public class Polygon2D extends Object2D implements Cloneable {
             result.shapeBContained = testAB.shapeBContained && testBA.shapeAContained;
         }
 
+        else if (collisionObject instanceof Circle2D) {
+            Circle2D that = (Circle2D) collisionObject;
+            result = checkCircle(that).getOpposite();
+        }
+
         return result;
     }
 
@@ -207,6 +212,99 @@ public class Polygon2D extends Object2D implements Cloneable {
                 result.separationDirection.y * result.distance);
 
         //return result
+        return result;
+    }
+
+    //checks the collision between this polygon and a circle
+    public CollisionInfo checkCircle(Circle2D circle) {
+        //create result object
+        CollisionInfo result = new CollisionInfo(this, circle);
+
+        //get transformed objects (copies)
+        Polygon2D thisT = (Polygon2D) this.getTransformed();
+        Circle2D circleT = (Circle2D) circle.getTransformed();
+
+        //find the closest point
+        double shortestDistance = Double.MAX_VALUE;
+        Vector2D closestVertex = new Vector2D();
+
+        for (Vector2D vertex : thisT.vertices) {
+            double distance = Math.pow(circleT.position.x - (thisT.position.x + vertex.x), 2) +
+                    Math.pow(circleT.position.y - (thisT.position.y + vertex.y), 2);
+
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closestVertex.x = thisT.position.x + vertex.x;
+                closestVertex.y = thisT.position.y + vertex.y;
+            }
+        }
+
+        //calculate the axis from the circle to the point
+        Vector2D axis = new Vector2D(closestVertex.x - circleT.position.y, closestVertex.y - circle.position.y).normalize();
+
+        //project the polygon onto the axis
+        MinMax polyRange = projectVerticesForMinMax(thisT.vertices, axis);
+
+        //get the offset between the two shapes
+        Vector2D vOffset = thisT.position.sub(circleT.position);
+
+        //shift the polygon along the axis
+        double scalarOffset = axis.mul(vOffset);
+        polyRange.min += scalarOffset;
+        polyRange.max += scalarOffset;
+
+        //project the circle onto this axis
+        MinMax circleRange = circleT.projectCircleForMinMax(axis);
+
+        //check for a gap
+        if ((polyRange.min - circleRange.max > 0) || circleRange.min - polyRange.max > 0) {
+            return null;
+        }
+
+        //calc the separation and store if this is the shortest
+        double distMin = (circleRange.max - polyRange.min);
+        shortestDistance = Math.abs(distMin);
+
+        result.distance = distMin;
+        result.separationDirection = axis;
+
+        this.checkRangesForContainment(polyRange, circleRange, result);
+
+        //loop over the polygon sides
+        for (int i = 0; i < thisT.vertices.length; i++){
+            //project onto axis
+            axis = getPerpendicularAxis(vertices, i);
+            polyRange = projectVerticesForMinMax(vertices, axis);
+
+            //shift the first polygons min max along the axis by the amount of offset between them
+            scalarOffset = axis.mul(vOffset);
+            polyRange.min += scalarOffset;
+            polyRange.max += scalarOffset;
+
+            //project the circle onto the axis
+            circleRange = circleT.projectCircleForMinMax(axis);
+            if ((polyRange.min - circleRange.max > 0) || circleRange.min - polyRange.max > 0) {
+                return null;
+            }
+
+            //check ranges for containment
+            checkRangesForContainment(polyRange, circleRange, result);
+            distMin = (circleRange.max - polyRange.min);
+
+            //check if this is the shortest by using the absolute val
+            double distMinAbs = Math.abs(distMin);
+            if (distMinAbs < shortestDistance) {
+                shortestDistance = distMinAbs;
+
+                result.distance = distMin;
+                result.separationDirection = axis;
+            }
+        }
+
+        //calc the final separation
+        result.separationDistance = result.separationDirection.mul(result.distance);
+
+        //return the result
         return result;
     }
 

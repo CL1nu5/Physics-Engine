@@ -32,6 +32,11 @@ public class Vector2D implements Cloneable {
         return new Vector2D(x / magnitude, y / magnitude);
     }
 
+    //returns the vector in the opposite direction
+    public Vector2D getOpposite() {
+        return new Vector2D(-1 * this.x, -1 * this.y);
+    }
+
     //returns distance/magnitude
     public double getDistance() {
         return Math.sqrt(x * x + y * y);

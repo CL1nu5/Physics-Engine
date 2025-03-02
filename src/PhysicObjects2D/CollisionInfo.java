@@ -9,6 +9,9 @@ public class CollisionInfo {
     public Vector2D separationDirection, separationDistance;
     public boolean shapeAContained, shapeBContained;
 
+    /* constructor */
+
+    //creates a collision info based on two shapes
     public CollisionInfo(Object2D shapeA, Object2D shapeB) {
         this.shapeA = shapeA;
         this.shapeB = shapeB;
@@ -18,6 +21,25 @@ public class CollisionInfo {
         shapeAContained = true;
         shapeBContained = true;
     }
+
+    /* public methods */
+
+    //returns the opposite of the current collision info
+    public CollisionInfo getOpposite(){
+        CollisionInfo result = new CollisionInfo(shapeB, shapeA);
+
+        result.distance *= -1;
+
+        result.separationDirection = this.separationDirection.getOpposite();
+        result.separationDistance = this.separationDistance.getOpposite();
+
+        result.shapeAContained = this.shapeBContained;
+        result.shapeBContained = this.shapeAContained;
+
+        return result;
+    }
+
+    /* basic methods */
 
     public String toString() {
         return

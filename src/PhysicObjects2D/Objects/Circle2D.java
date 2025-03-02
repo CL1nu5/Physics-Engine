@@ -1,6 +1,7 @@
 package PhysicObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
+import PhysicObjects2D.MinMax;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Vector2D;
 
@@ -39,6 +40,11 @@ public class Circle2D extends Object2D implements Cloneable{
 
         if (collisionObject instanceof Circle2D) {
             result = checkCircle((Circle2D) collisionObject);
+        }
+
+        else if (collisionObject instanceof Polygon2D) {
+            Polygon2D that = (Polygon2D) collisionObject;
+            result = that.checkCircle(this);
         }
 
         return result;
@@ -92,6 +98,9 @@ public class Circle2D extends Object2D implements Cloneable{
         //vector is based on the center points
         result.separationDirection = that.position.sub(this.position).normalize();
 
+        //distance between
+        result.distance = distanceBetween;
+
         //separation distance is based on the vector and the difference
         double diff = radiusTotal - distanceBetween;
         result.separationDistance = result.separationDirection.mul(diff);
@@ -105,6 +114,11 @@ public class Circle2D extends Object2D implements Cloneable{
 
         //return result
         return result;
+    }
+
+    MinMax projectCircleForMinMax(Vector2D axis) {
+        double proj = axis.mul(new Vector2D()); // 0,0
+        return  new MinMax(proj - this.radius, proj + this.radius);
     }
 
     /* basic methods */
