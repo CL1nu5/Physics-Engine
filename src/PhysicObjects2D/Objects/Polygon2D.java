@@ -23,6 +23,7 @@ public class Polygon2D extends Object2D implements Cloneable {
 
     //creates polygon with vertices
     public Polygon2D(Vector2D[] vertices) {
+        super();
         this.vertices = vertices;
     }
 
@@ -33,13 +34,17 @@ public class Polygon2D extends Object2D implements Cloneable {
     }
 
     //creates a standard polygon shape with a set number of sides
-    public Polygon2D(int sides, double radius) throws Exception {
+    public Polygon2D(int sides, double radius) {
         this(sides, radius, new Vector2D(), new Vector2D(), 1, 0);
     }
 
+    //creates a standard polygon shape with a set number of sides
+    public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity) {
+        this(sides, radius, position, velocity, 1, 0);
+    }
 
     //creates a standard polygon shape with a set number of sides
-    public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity, double scale, double rotation) throws Exception {
+    public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity, double scale, double rotation) {
         //sets super values
         super(position, velocity, scale, rotation);
 
@@ -63,7 +68,6 @@ public class Polygon2D extends Object2D implements Cloneable {
             vertices[i] = point;
         }
     }
-
 
     /* overridden abstract methods */
 
@@ -129,7 +133,7 @@ public class Polygon2D extends Object2D implements Cloneable {
     //paint polygon
     @Override
     public void paint(Graphics2D g) {
-        Polygon2D poly = (Polygon2D) getTransformed();
+        Polygon2D poly = (Polygon2D) this.getTransformed();
 
         g.setColor(Color.BLACK);
 
@@ -141,13 +145,15 @@ public class Polygon2D extends Object2D implements Cloneable {
             Vector2D p1 = poly.vertices[i].add(poly.position), p2 = poly.vertices[next].add(poly.position);
 
             g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-
-            g.fillOval((int)(poly.position.x - 4), (int) (poly.position.y - 4), 8, 8);
         }
+
+        //paint middle point
+        g.fillOval((int)(poly.position.x - 4), (int) (poly.position.y - 4), 8, 8);
     }
 
     /* collision checks */
 
+    //checks the collision between this polygon and another polygon and returns the collision information
     private CollisionInfo checkPoly(Polygon2D that) {
         //setup
         double shortestDistance = Double.MAX_VALUE;
@@ -204,6 +210,7 @@ public class Polygon2D extends Object2D implements Cloneable {
         return result;
     }
 
+    // returns the perpendicular axis for a by index selected vertex
     private Vector2D getPerpendicularAxis(Vector2D[] vertices, int index) {
         Vector2D point1 = vertices[index];
         Vector2D point2 = index >= vertices.length - 1 ? vertices[0] : vertices[index + 1];
@@ -214,6 +221,7 @@ public class Polygon2D extends Object2D implements Cloneable {
         return axis;
     }
 
+    //projects the minimum and maximum "shadow" value for the object projected on the axis
     private MinMax projectVerticesForMinMax(Vector2D[] vertices, Vector2D axis) {
         double min = axis.mul(vertices[0]);
         double max = min;
@@ -227,6 +235,7 @@ public class Polygon2D extends Object2D implements Cloneable {
         return new MinMax(min, max);
     }
 
+    //checks if the shape is fully contained by the other object
     private void checkRangesForContainment(MinMax rangeA, MinMax rangeB, CollisionInfo info) {
         if (rangeA.max > rangeB.max || rangeA.min < rangeB.min) info.shapeAContained = false;
         if (rangeB.max > rangeA.max || rangeB.min < rangeA.min) info.shapeBContained = false;
@@ -246,8 +255,17 @@ public class Polygon2D extends Object2D implements Cloneable {
         }
     }
 
+    //returns a string of the polygon with all it's vertices
     public String toString() {
-        StringBuilder result = new StringBuilder("Polygon: {");
+        StringBuilder result = new StringBuilder("Polygon - ");
+
+        result.append(position).append(": {");
+
+        result.append("velocity=").append(velocity)
+                .append(",scale=").append(scale)
+                .append(",rotation=").append(rotation);
+
+        result.append("} - {");
 
         for (int i = 0; i <= vertices.length - 1; i++) {
             result.append(vertices[i].add(position).toString());

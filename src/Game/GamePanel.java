@@ -1,6 +1,5 @@
 package Game;
 
-import PhysicObjects2D.CollisionInfo;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Objects.Polygon2D;
 import PhysicObjects2D.Vector2D;
@@ -19,12 +18,8 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         this.setPreferredSize(size);
 
-        try {
-            gameObjects.add(new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0));
-            gameObjects.add(new Polygon2D(4, 100, new Vector2D(600, 330), new Vector2D(), 1, 30));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        gameObjects.add(new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0));
+        gameObjects.add(new Polygon2D(4, 100, new Vector2D(600, 330), new Vector2D(), 1, 30));
 
         frame = new Frame("Game");
         frame.switchPanel(this);

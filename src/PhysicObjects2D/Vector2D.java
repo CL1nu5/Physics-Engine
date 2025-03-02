@@ -37,6 +37,11 @@ public class Vector2D implements Cloneable {
         return Math.sqrt(x * x + y * y);
     }
 
+    //returns the distance to another vector
+    public double getDistance(Vector2D that) {
+        return Math.sqrt(Math.pow(that.x - this.x, 2) + Math.pow(that.y - this.y, 2));
+    }
+
     //returns a new vector based on the addition of both vectors
     public Vector2D add(Vector2D that) {
         return new Vector2D(this.x + that.x, this.y + that.y);
@@ -50,6 +55,11 @@ public class Vector2D implements Cloneable {
     //makes the dot product of two vectors
     public double mul(Vector2D that) {
         return (this.x * that.x) + (this.y * that.y);
+    }
+
+    //multiplies the vector by a given multiplier
+    public Vector2D mul(double multiplier) {
+        return new Vector2D(this.x * multiplier, this.y * multiplier);
     }
 
     /* basic methods */
