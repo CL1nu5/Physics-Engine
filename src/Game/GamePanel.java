@@ -1,6 +1,7 @@
 package Game;
 
 import PhysicObjects2D.Object2D;
+import PhysicObjects2D.Objects.Circle2D;
 import PhysicObjects2D.Objects.Polygon2D;
 import PhysicObjects2D.Vector2D;
 
@@ -20,6 +21,8 @@ public class GamePanel extends JPanel {
 
         gameObjects.add(new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0));
         gameObjects.add(new Polygon2D(4, 100, new Vector2D(600, 330), new Vector2D(), 1, 30));
+        //gameObjects.add(new Circle2D(200, new Vector2D(300,400), new Vector2D()));
+        //gameObjects.add(new Circle2D(100, new Vector2D(400,250), new Vector2D()));
 
         frame = new Frame("Game");
         frame.switchPanel(this);
