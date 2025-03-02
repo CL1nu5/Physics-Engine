@@ -245,4 +245,18 @@ public class Polygon2D extends Object2D implements Cloneable {
             throw new AssertionError();
         }
     }
+
+    public String toString() {
+        StringBuilder result = new StringBuilder("Polygon: {");
+
+        for (int i = 0; i <= vertices.length - 1; i++) {
+            result.append(vertices[i].add(position).toString());
+
+            if (i != vertices.length - 1) {
+                result.append(",");
+            }
+        }
+
+        return result + "}";
+    }
 }

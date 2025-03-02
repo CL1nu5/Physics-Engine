@@ -18,4 +18,12 @@ public class CollisionInfo {
         shapeAContained = true;
         shapeBContained = true;
     }
+
+    public String toString() {
+        return
+                "Shape A: " + shapeA.toString() + "\n"               + "Shape B: " + shapeB.toString() + "\n" +
+                "distance: " + distance + "\n"                       + "direction: " + separationDirection.toString() + "\n" +
+                "distance: " + separationDistance.toString() + "\n"  + "shapeAContained: " + shapeAContained + "\n" +
+                "shapeBContained: " + shapeBContained + "\n"  ;
+    }
 }

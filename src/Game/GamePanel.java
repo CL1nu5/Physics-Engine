@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
 
         try {
             gameObjects.add(new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0));
-            gameObjects.add(new Polygon2D(10, 100, new Vector2D(400, 330), new Vector2D(), 1, 30));
+            gameObjects.add(new Polygon2D(4, 100, new Vector2D(600, 330), new Vector2D(), 1, 30));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -29,19 +29,7 @@ public class GamePanel extends JPanel {
         frame = new Frame("Game");
         frame.switchPanel(this);
 
-        CollisionInfo info = gameObjects.get(0).checkCollisions(gameObjects.get(1));
-        if (info == null){
-            System.out.println("no overlap!");
-        }
-        else {
-            System.out.println(info.distance);
-            System.out.println(info.separationDistance);
-            System.out.println(info.shapeAContained);
-            System.out.println(info.shapeBContained);
-            System.out.println("overlap");
-        }
-
-        System.out.println();
+        System.out.println(gameObjects.get(0).checkCollisions(gameObjects.get(1)));
 
         repaint();
     }

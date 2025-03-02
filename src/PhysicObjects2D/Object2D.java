@@ -40,7 +40,7 @@ public abstract class Object2D implements Cloneable {
     //moves the object based on the velocity and checks the collision with other objects
     public void move(ArrayList<Object2D> collisionObjects) {
         move();
-
+        checkCollisions(collisionObjects);
     }
 
     // method checks the collision between this object and other objects and moves the objects depending
