@@ -216,7 +216,7 @@ public class Polygon2D extends Object2D implements Cloneable {
     }
 
     //checks the collision between this polygon and a circle
-    public CollisionInfo checkCircle(Circle2D circle) {
+    CollisionInfo checkCircle(Circle2D circle) {
         //create result object
         CollisionInfo result = new CollisionInfo(this, circle);
 

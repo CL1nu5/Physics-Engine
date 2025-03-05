@@ -28,10 +28,10 @@ public class CollisionInfo {
     public CollisionInfo getOpposite(){
         CollisionInfo result = new CollisionInfo(shapeB, shapeA);
 
-        result.distance *= -1;
+        result.distance = this.distance;
 
-        result.separationDirection = this.separationDirection.getOpposite();
-        result.separationDistance = this.separationDistance.getOpposite();
+        result.separationDirection = this.separationDirection;
+        result.separationDistance = this.separationDistance;
 
         result.shapeAContained = this.shapeBContained;
         result.shapeBContained = this.shapeAContained;

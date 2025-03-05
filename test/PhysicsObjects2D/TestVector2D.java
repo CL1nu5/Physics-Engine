@@ -20,7 +20,7 @@ public class TestVector2D extends TestCase {
         return new TestSuite(TestVector2D.class);
     }
 
-    /* test */
+    /* tests */
 
     //tests if the object cloning works
     public void testClone() {

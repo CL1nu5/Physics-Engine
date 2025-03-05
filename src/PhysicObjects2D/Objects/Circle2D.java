@@ -44,7 +44,7 @@ public class Circle2D extends Object2D implements Cloneable{
 
         else if (collisionObject instanceof Polygon2D) {
             Polygon2D that = (Polygon2D) collisionObject;
-            result = that.checkCircle(this);
+            result = that.checkCircle(this).getOpposite();
         }
 
         return result;
