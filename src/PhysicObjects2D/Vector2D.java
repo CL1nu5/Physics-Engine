@@ -1,5 +1,7 @@
 package PhysicObjects2D;
 
+import org.apache.commons.math3.util.Precision;
+
 public class Vector2D implements Cloneable {
 
     /* values */
@@ -65,6 +67,11 @@ public class Vector2D implements Cloneable {
     //multiplies the vector by a given multiplier
     public Vector2D mul(double multiplier) {
         return new Vector2D(this.x * multiplier, this.y * multiplier);
+    }
+
+    //rounds the x and y value to the nth digit
+    public Vector2D round(int digit) {
+        return new Vector2D(Precision.round(x, digit), Precision.round(y, digit));
     }
 
     /* basic methods */

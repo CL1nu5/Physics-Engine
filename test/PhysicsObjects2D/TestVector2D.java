@@ -142,4 +142,17 @@ public class TestVector2D extends TestCase {
         //test2 (other order)
         assertEquals(new Vector2D(-1, -4), vector2.sub(vector1));
     }
+
+    //test the round funktion
+    public void testRound() {
+        //test setup
+        Vector2D vector1 = new Vector2D(3.23846238674, 5.18235615);
+        Vector2D vector2 = new Vector2D(3.23846772344, 5.18297815);
+
+        //test1
+        assertFalse(vector1.equals(vector2));
+
+        //test2
+        assertEquals(vector1.round(2), vector2.round(2));
+    }
 }

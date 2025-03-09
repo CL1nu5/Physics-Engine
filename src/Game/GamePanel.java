@@ -19,8 +19,10 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         this.setPreferredSize(size);
 
-        gameObjects.add(new Polygon2D(4, 100, new Vector2D(400, 330), new Vector2D(), 1, 30));
-        gameObjects.add(new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0));
+        gameObjects.add(new Polygon2D(5, 200, new Vector2D(600, 330), new Vector2D(), 1, 30));
+        gameObjects.add(new Polygon2D(3, 150, new Vector2D(340, 300), new Vector2D(), 1, 90));
+        gameObjects.add(new Polygon2D(4, 123, new Vector2D(133, 342), new Vector2D(), 1, 0));
+        gameObjects.add(new Polygon2D(4, 123, new Vector2D(133, 342), new Vector2D(), 1, 70));
 
         frame = new Frame("Game");
         frame.switchPanel(this);

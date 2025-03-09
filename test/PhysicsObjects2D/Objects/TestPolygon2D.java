@@ -1,5 +1,6 @@
 package PhysicsObjects2D.Objects;
 
+import PhysicObjects2D.CollisionInfo;
 import PhysicObjects2D.Objects.Polygon2D;
 import PhysicObjects2D.Vector2D;
 import junit.framework.TestCase;
@@ -70,5 +71,77 @@ public class TestPolygon2D extends TestCase {
         poly2 = new Polygon2D(10, 200, new Vector2D(400, 400), new Vector2D(), 1, 0);
 
         assertTrue(poly1.checkCollisions(poly2).shapeAContained);
+
+        //test4: shape b is fully contained
+        poly1 = new Polygon2D(7, 250, new Vector2D(400, 330), new Vector2D(), 1, 30);
+        poly2 = new Polygon2D(5, 50, new Vector2D(300, 300), new Vector2D(), 1, 0);
+
+        CollisionInfo info = poly1.checkCollisions(poly2);
+        assertTrue(info.shapeBContained);
+
+        //test5: move shape by distance and check if it is outside the object
+        Polygon2D shapeB = (Polygon2D) info.shapeB;
+        shapeB.position = shapeB.position.add(info.separationDistance);
+
+        assertNull(poly1.checkCollisions(shapeB));
+
+        //test6: move shape A by opposite direction, for a different test
+        poly1 = new Polygon2D(5, 200, new Vector2D(600, 330), new Vector2D(), 1, 30);
+        poly2 = new Polygon2D(3, 150, new Vector2D(340, 300), new Vector2D(), 1, 90);
+
+        info = poly1.checkCollisions(poly2);
+        assertNotNull(info);
+
+        Polygon2D shapeA = (Polygon2D) info.shapeA;
+        shapeA.position = shapeA.position.add(info.separationDistance.getOpposite().mul(1.000001)); // removing small division error
+
+        assertNull(poly1.checkCollisions(poly2));
+    }
+
+    // tests the transform method for correctly transforming the polygon
+    public void testTransform() {
+        //test1 tests that the vertices length doesn't change:
+        Polygon2D polygon = new Polygon2D(7, 150, new Vector2D(718, 52), new Vector2D(), 2, 0);
+        Polygon2D transformed = (Polygon2D) polygon.getTransformed();
+
+        assertEquals(polygon.vertices.length, transformed.vertices.length);
+
+        //test2: checks, that the vertices do not change when scale is 1 and rotation 0
+        polygon = new Polygon2D(3, 34, new Vector2D(352, 1623), new Vector2D(), 1, 0);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        assertTrue(polygon.vertices[0].equals(transformed.vertices[0]));
+
+        //test3: checks that the polygon gets scaled
+        polygon = new Polygon2D(5, 200, new Vector2D(250, 700), new Vector2D(), 2, 0);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        assertFalse(polygon.vertices[0].equals(transformed.vertices[0]));
+
+        //test4: checks, that the polygon gets rotated
+        polygon = new Polygon2D(9, 324, new Vector2D(523, 114), new Vector2D(), 1, 1);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        assertFalse(polygon.vertices[0].equals(transformed.vertices[0]));
+
+        //test5: checks, that if the quader gets rotated by 90 degrees, the vertices change places
+        polygon = new Polygon2D(4, 123, new Vector2D(1233, 342), new Vector2D(), 1, 90);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        assertTrue(polygon.vertices[2].equals(transformed.vertices[1]));
+
+        //test6: check, that their values are the same, if it gets rotated by 360 degrees
+        polygon = new Polygon2D(8, 341, new Vector2D(13, 332), new Vector2D(), 1, 360);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        for (int i = 0; i < polygon.vertices.length; i++){
+            assertEquals(polygon.vertices[i].round(5), transformed.vertices[i].round(5));
+        }
+
+        //test7: checks, that the polygon, can be transformed with digit numbers
+        polygon = new Polygon2D(6, 289, new Vector2D(713, 922), new Vector2D(), 0.5, 23.7);
+        transformed = (Polygon2D) polygon.getTransformed();
+
+        assertFalse(polygon.vertices[0].equals(transformed.vertices[0]));
     }
 }
