@@ -68,7 +68,7 @@ public class TestPolygon2D extends TestCase {
 
     // tests the transform method for correctly transforming the polygon
     public void testTransform() {
-        //test1 tests that the vertices length doesn't change:
+        //test1: tests that the vertices length doesn't change:
         Polygon2D polygon = new Polygon2D(7, 150, new Vector2D(718, 52), new Vector2D(), 2, 0);
         Polygon2D transformed = (Polygon2D) polygon.getTransformed();
 
@@ -102,7 +102,7 @@ public class TestPolygon2D extends TestCase {
         polygon = new Polygon2D(8, 341, new Vector2D(13, 332), new Vector2D(), 1, 360);
         transformed = (Polygon2D) polygon.getTransformed();
 
-        for (int i = 0; i < polygon.vertices.length; i++){
+        for (int i = 0; i < polygon.vertices.length; i++) {
             assertEquals(polygon.vertices[i].round(5), transformed.vertices[i].round(5));
         }
 
@@ -111,6 +111,13 @@ public class TestPolygon2D extends TestCase {
         transformed = (Polygon2D) polygon.getTransformed();
 
         assertFalse(polygon.vertices[0].equals(transformed.vertices[0]));
+
+        //test8: check, that transforming an object twice has no effect
+        Polygon2D transformedTransformed = (Polygon2D) transformed.getTransformed();
+
+        for (int i = 0; i < transformed.vertices.length; i++) {
+            assertEquals(transformed.vertices[i], transformedTransformed.vertices[i]);
+        }
     }
 
     //tests if cloning the polygon actually crates a completely new object
