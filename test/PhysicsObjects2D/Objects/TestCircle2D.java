@@ -2,7 +2,6 @@ package PhysicsObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
 import PhysicObjects2D.Objects.Circle2D;
-import PhysicObjects2D.Objects.Polygon2D;
 import PhysicObjects2D.Vector2D;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

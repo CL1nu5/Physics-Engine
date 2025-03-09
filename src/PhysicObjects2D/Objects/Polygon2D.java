@@ -98,7 +98,7 @@ public class Polygon2D extends Object2D implements Cloneable {
 
         else if (collisionObject instanceof Circle2D) {
             Circle2D that = (Circle2D) collisionObject;
-            result = checkCircle(that).getOpposite();
+            result = checkCircle(that);
         }
 
         return result;
@@ -305,7 +305,7 @@ public class Polygon2D extends Object2D implements Cloneable {
         result.separationDistance = result.separationDirection.mul(result.distance);
 
         //return the result
-        return result;
+        return result.getOpposite();
     }
 
     // returns the perpendicular axis for a by index selected vertex

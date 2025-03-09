@@ -24,7 +24,7 @@ public class CollisionInfo {
 
     /* public methods */
 
-    //returns the opposite of the current collision info
+    //returns the opposite of the current collision info (flips the shapes, it doesn't change the vectors)
     public CollisionInfo getOpposite(){
         CollisionInfo result = new CollisionInfo(shapeB, shapeA);
 
@@ -37,6 +37,15 @@ public class CollisionInfo {
         result.shapeBContained = this.shapeAContained;
 
         return result;
+    }
+
+    //returns the contained object, if there is one, if there isn't one it returns null
+    public Object2D getContainedObject() {
+        if ((!shapeAContained) && (!shapeBContained)) {
+            return null;
+        }
+
+        return shapeAContained ? shapeA : shapeB;
     }
 
     /* basic methods */

@@ -1,6 +1,7 @@
 package PhysicsObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
+import PhysicObjects2D.Objects.Circle2D;
 import PhysicObjects2D.Objects.Polygon2D;
 import PhysicObjects2D.Vector2D;
 import junit.framework.TestCase;
@@ -40,7 +41,7 @@ public class TestPolygon2D extends TestCase {
 
         assertTrue(poly1.checkCollisions(poly2).shapeAContained);
 
-        //test4: //test4: one object is fully contained (shape b)
+        //test4: one object is fully contained (shape b)
         poly1 = new Polygon2D(7, 250, new Vector2D(400, 330), new Vector2D(), 1, 30);
         poly2 = new Polygon2D(5, 50, new Vector2D(300, 300), new Vector2D(), 1, 0);
 
@@ -64,6 +65,51 @@ public class TestPolygon2D extends TestCase {
         shapeA.position = shapeA.position.add(info.separationDistance.getOpposite().mul(1.000001)); // removing small division error
 
         assertNull(poly1.checkCollisions(poly2));
+    }
+
+    //testing some different interaction scenarios
+    public void testPolyWithCircleCollision() {
+        //test1: they are intersecting
+        Polygon2D polygon = new Polygon2D(5, 200, new Vector2D(232,222), new Vector2D());
+        Circle2D circle = new Circle2D(100, new Vector2D(320,291), new Vector2D());
+
+        assertNotNull(polygon.checkCollisions(circle));
+
+        //test2: no collision
+        polygon.position = new Vector2D(820,391);
+
+        assertNull(polygon.checkCollisions(circle));
+
+        //test3: one object is fully contained (shape a)
+        polygon = new Polygon2D(7, 300, new Vector2D(481,534), new Vector2D());
+        circle = new Circle2D(50, new Vector2D(622,399), new Vector2D());
+
+        assertTrue(circle.checkCollisions(polygon).shapeAContained);
+
+        //test4: one object is fully contained (shape b)
+        polygon = new Polygon2D(3, 123, new Vector2D(523,434), new Vector2D());
+        circle = new Circle2D(250, new Vector2D(612,378), new Vector2D());
+
+        CollisionInfo info = polygon.checkCollisions(circle);
+        assertTrue(info.shapeBContained);
+
+        //test5: move shape by distance and check if it is outside the object
+        Polygon2D shapeB = (Polygon2D) info.shapeB;
+        shapeB.position = shapeB.position.add(info.separationDistance.mul(1.000001));
+
+        assertNull(polygon.checkCollisions(circle));
+
+        //test6: move shape A by opposite direction, for a different test
+        polygon = new Polygon2D(3, 245, new Vector2D(312,315), new Vector2D(), 1 , 90);
+        circle = new Circle2D(300, new Vector2D(646,223), new Vector2D());
+
+        info = polygon.checkCollisions(circle);
+        assertNotNull(info);
+
+        Circle2D shapeA = (Circle2D) info.shapeA;
+        shapeA.position = shapeA.position.add(info.separationDistance.getOpposite().mul(1.000001));
+
+        assertNull(polygon.checkCollisions(circle));
     }
 
     // tests the transform method for correctly transforming the polygon
