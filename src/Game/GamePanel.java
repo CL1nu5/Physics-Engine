@@ -23,14 +23,14 @@ public class GamePanel extends JPanel {
         gameObjects.add(new Circle2D(300, new Vector2D(646,223), new Vector2D()));
 
         frame = new Frame("Game");
-        frame.switchPanel(this);
+        frame.switchPanel(this,false);
 
         System.out.println(gameObjects.get(0).checkCollisions(gameObjects.get(1)));
 
         repaint();
     }
 
-
+    //paints the gamePanel objects
     public void paint(Graphics g){
         super.paint(g);
 
