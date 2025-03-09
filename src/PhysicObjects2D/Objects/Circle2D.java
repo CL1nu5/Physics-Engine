@@ -98,11 +98,11 @@ public class Circle2D extends Object2D implements Cloneable{
         //vector is based on the center points
         result.separationDirection = that.position.sub(this.position).normalize();
 
-        //distance between
-        result.distance = distanceBetween;
+        //difference = distance between
+        double diff = radiusTotal - distanceBetween;
+        result.distance = diff;
 
         //separation distance is based on the vector and the difference
-        double diff = radiusTotal - distanceBetween;
         result.separationDistance = result.separationDirection.mul(diff);
 
         //calc if they are contained based on if the shape smaller and too close

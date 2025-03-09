@@ -23,7 +23,7 @@ public class TestPolygon2D extends TestCase {
     //tests if cloning the polygon actually crates a completely new object
     public void testClone() {
         //creating a new polygon
-        Polygon2D polygon = new Polygon2D(5, 200, new Vector2D(250, 700), new Vector2D());
+        Polygon2D polygon = new Polygon2D(100, 200, new Vector2D(250, 700), new Vector2D());
 
         //cloning the polygon
         Polygon2D clone = polygon.clone();
@@ -72,7 +72,7 @@ public class TestPolygon2D extends TestCase {
 
         assertTrue(poly1.checkCollisions(poly2).shapeAContained);
 
-        //test4: shape b is fully contained
+        //test4: //test4: one object is fully contained (shape b)
         poly1 = new Polygon2D(7, 250, new Vector2D(400, 330), new Vector2D(), 1, 30);
         poly2 = new Polygon2D(5, 50, new Vector2D(300, 300), new Vector2D(), 1, 0);
 
@@ -81,7 +81,7 @@ public class TestPolygon2D extends TestCase {
 
         //test5: move shape by distance and check if it is outside the object
         Polygon2D shapeB = (Polygon2D) info.shapeB;
-        shapeB.position = shapeB.position.add(info.separationDistance);
+        shapeB.position = shapeB.position.add(info.separationDistance.mul(1.000001));
 
         assertNull(poly1.checkCollisions(shapeB));
 
