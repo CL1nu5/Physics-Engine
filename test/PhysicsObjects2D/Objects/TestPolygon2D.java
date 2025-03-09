@@ -20,38 +20,6 @@ public class TestPolygon2D extends TestCase {
 
     /* tests */
 
-    //tests if cloning the polygon actually crates a completely new object
-    public void testClone() {
-        //creating a new polygon
-        Polygon2D polygon = new Polygon2D(100, 200, new Vector2D(250, 700), new Vector2D());
-
-        //cloning the polygon
-        Polygon2D clone = polygon.clone();
-
-        //checking that they are not the same
-        assertNotSame(polygon, clone);
-
-        //assert, that the individual components are not the same
-        assertNotSame(polygon.position, clone.position);
-        assertNotSame(polygon.velocity, clone.velocity);
-
-        //assert, that the individual components are still equal
-        assertEquals(polygon.position, clone.position);
-        assertEquals(polygon.velocity, clone.velocity);
-
-        //assert, that the vertices are cloned correctly
-        assertNotSame(polygon.vertices, clone.vertices);
-
-        //check that the vertices have the same length
-        assertEquals(polygon.vertices.length, clone.vertices.length);
-
-        //assert, that the individual vertices, are not the same, but still equal
-        for(int i = 0; i < polygon.vertices.length; i++) {
-            assertNotSame(polygon.vertices[i], clone.vertices[i]);
-            assertEquals(polygon.vertices[i], clone.vertices[i]);
-        }
-    }
-
     //testing some different interaction scenarios
     public void testPolyWithPolyCollision() {
         //test1: they are intersecting
@@ -143,5 +111,37 @@ public class TestPolygon2D extends TestCase {
         transformed = (Polygon2D) polygon.getTransformed();
 
         assertFalse(polygon.vertices[0].equals(transformed.vertices[0]));
+    }
+
+    //tests if cloning the polygon actually crates a completely new object
+    public void testClone() {
+        //creating a new polygon
+        Polygon2D polygon = new Polygon2D(100, 200, new Vector2D(250, 700), new Vector2D());
+
+        //cloning the polygon
+        Polygon2D clone = polygon.clone();
+
+        //checking that they are not the same
+        assertNotSame(polygon, clone);
+
+        //assert, that the individual components are not the same
+        assertNotSame(polygon.position, clone.position);
+        assertNotSame(polygon.velocity, clone.velocity);
+
+        //assert, that the individual components are still equal
+        assertEquals(polygon.position, clone.position);
+        assertEquals(polygon.velocity, clone.velocity);
+
+        //assert, that the vertices are cloned correctly
+        assertNotSame(polygon.vertices, clone.vertices);
+
+        //check that the vertices have the same length
+        assertEquals(polygon.vertices.length, clone.vertices.length);
+
+        //assert, that the individual vertices, are not the same, but still equal
+        for(int i = 0; i < polygon.vertices.length; i++) {
+            assertNotSame(polygon.vertices[i], clone.vertices[i]);
+            assertEquals(polygon.vertices[i], clone.vertices[i]);
+        }
     }
 }
