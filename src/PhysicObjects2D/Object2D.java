@@ -48,11 +48,16 @@ public abstract class Object2D implements Cloneable {
         //todo call check Collision an handel the returned values
     }
 
+    /* abstract methods */
+
     //checks collision
     public abstract CollisionInfo checkCollisions(Object2D collisionObject);
 
     //abstract method, that returns the object transformed based on scale and rotation
     public abstract Object2D getTransformed();
+
+    //method to check if a vector/point is inside an object
+    public abstract boolean contains(Vector2D vector);
 
     //painting the object
     public abstract void paint(Graphics2D g);

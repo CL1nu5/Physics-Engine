@@ -110,6 +110,12 @@ public class TestPolygon2D extends TestCase {
         shapeA.position = shapeA.position.add(info.separationDistance.getOpposite().mul(1.000001));
 
         assertNull(polygon.checkCollisions(circle));
+
+        //test7: only intersects, if the rotation works properly
+        polygon = new Polygon2D(3, 250, new Vector2D(312,315), new Vector2D(), 1 , 60);
+        circle = new Circle2D(185, new Vector2D(626,233), new Vector2D());
+
+        assertNotNull(circle.checkCollisions(polygon));
     }
 
     // tests the transform method for correctly transforming the polygon

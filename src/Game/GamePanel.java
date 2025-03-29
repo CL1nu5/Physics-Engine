@@ -7,9 +7,11 @@ import PhysicObjects2D.Vector2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements MouseListener {
 
     Dimension size = new Dimension(1000, 800);
     Frame frame;
@@ -19,14 +21,15 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         this.setPreferredSize(size);
 
-        gameObjects.add(new Polygon2D(3, 245, new Vector2D(312,315), new Vector2D(), 1 , 90));
-        gameObjects.add(new Circle2D(300, new Vector2D(646,223), new Vector2D()));
+        gameObjects.add(new Polygon2D(3, 250, new Vector2D(312,315), new Vector2D(), 1 , 0));
+        gameObjects.add(new Circle2D(185, new Vector2D(626,233), new Vector2D()));
 
         frame = new Frame("Game");
         frame.switchPanel(this,false);
 
         System.out.println(gameObjects.get(0).checkCollisions(gameObjects.get(1)));
 
+        this.addMouseListener(this);
         repaint();
     }
 
@@ -38,5 +41,32 @@ public class GamePanel extends JPanel {
         for (Object2D object: gameObjects) {
             object.paint(g2d);
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Vector2D pos = new Vector2D(e.getPoint());
+        System.out.println(gameObjects.get(0).contains(pos));
+        System.out.println(pos);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

@@ -2,6 +2,8 @@ package PhysicObjects2D;
 
 import org.apache.commons.math3.util.Precision;
 
+import java.awt.*;
+
 public class Vector2D implements Cloneable {
 
     /* values */
@@ -19,6 +21,11 @@ public class Vector2D implements Cloneable {
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    //get vector from awt.Point class
+    public Vector2D(Point point) {
+        this(point.x, point.y);
     }
 
     /* public methods */
@@ -46,7 +53,15 @@ public class Vector2D implements Cloneable {
 
     //returns the distance to another vector
     public double getDistance(Vector2D that) {
-        return Math.sqrt(Math.pow(that.x - this.x, 2) + Math.pow(that.y - this.y, 2));
+        return Math.sqrt(getDistanceSq(that));
+    }
+
+    //returns the distance to another point squared
+    public double getDistanceSq(Vector2D that) {
+        double px = this.x - that.x;
+        double py = this.y - that.y;
+
+        return (px * px + py * py);
     }
 
     //returns a new vector based on the addition of both vectors
@@ -75,6 +90,11 @@ public class Vector2D implements Cloneable {
     }
 
     /* basic methods */
+
+    //returns the vector as an awt.Point
+    public Point toPoint() {
+        return new Point((int) this.x, (int) this.y);
+    }
 
     //clones the vector
     @Override

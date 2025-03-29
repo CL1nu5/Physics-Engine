@@ -61,6 +61,12 @@ public class Circle2D extends Object2D implements Cloneable{
     }
 
     @Override
+    public boolean contains(Vector2D vector) {
+        return this.position.getDistance(vector) < this.radius * this.scale;
+    }
+
+
+    @Override
     public void paint(Graphics2D g) {
         Circle2D circle = (Circle2D) this.getTransformed();
 

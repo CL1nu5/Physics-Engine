@@ -38,6 +38,19 @@ public class Polygon2D extends Object2D implements Cloneable {
         this(sides, radius, new Vector2D(), new Vector2D(), 1, 0);
     }
 
+    //creates a polygon2D based on a polygon object
+    public Polygon2D(Polygon polygon,Vector2D position, Vector2D velocity) {
+        super(position, velocity, 1, 0);
+
+        //create vertices
+        this.vertices = new Vector2D[polygon.npoints];
+
+        //add individual vertexes
+        for (int i = 0; i < vertices.length; i++) {
+            vertices[i] = new Vector2D(polygon.xpoints[i], polygon.ypoints[i]);
+        }
+    }
+
     //creates a standard polygon shape with a set number of sides
     public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity) {
         this(sides, radius, position, velocity, 1, 0);
@@ -94,9 +107,8 @@ public class Polygon2D extends Object2D implements Cloneable {
             //set contained shapes
             result.shapeAContained = testAB.shapeAContained && testBA.shapeBContained;
             result.shapeBContained = testAB.shapeBContained && testBA.shapeAContained;
-        }
 
-        else if (collisionObject instanceof Circle2D) {
+        } else if (collisionObject instanceof Circle2D) {
             Circle2D that = (Circle2D) collisionObject;
             result = checkCircle(that);
         }
@@ -135,25 +147,24 @@ public class Polygon2D extends Object2D implements Cloneable {
         return transformed;
     }
 
+    //checks the collision wit a point
+    public boolean contains(Vector2D vector) {
+        return getPolygon().contains(vector.toPoint());
+    }
+
     //paint polygon
     @Override
     public void paint(Graphics2D g) {
-        Polygon2D poly = (Polygon2D) this.getTransformed();
+        Polygon poly = getPolygon();
 
+        //set color
         g.setColor(Color.BLACK);
 
-        for (int i = 0 ; i < poly.vertices.length; i++){
-            int next = i + 1;
-            if (next == poly.vertices.length)
-                next = 0;
-
-            Vector2D p1 = poly.vertices[i].add(poly.position), p2 = poly.vertices[next].add(poly.position);
-
-            g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-        }
+        //paint polygon
+        g.drawPolygon(poly);
 
         //paint middle point
-        g.fillOval((int)(poly.position.x - 4), (int) (poly.position.y - 4), 8, 8);
+        g.fillOval((int) (this.position.x - 4), (int) (this.position.y - 4), 8, 8);
     }
 
     /* collision checks */
@@ -271,10 +282,10 @@ public class Polygon2D extends Object2D implements Cloneable {
         this.checkRangesForContainment(polyRange, circleRange, result);
 
         //loop over the polygon sides
-        for (int i = 0; i < thisT.vertices.length; i++){
+        for (int i = 0; i < thisT.vertices.length; i++) {
             //project onto axis
-            axis = getPerpendicularAxis(vertices, i);
-            polyRange = projectVerticesForMinMax(vertices, axis);
+            axis = getPerpendicularAxis(thisT.vertices, i);
+            polyRange = projectVerticesForMinMax(thisT.vertices, axis);
 
             //shift the first polygons min max along the axis by the amount of offset between them
             scalarOffset = axis.mul(vOffset);
@@ -337,6 +348,28 @@ public class Polygon2D extends Object2D implements Cloneable {
     private void checkRangesForContainment(MinMax rangeA, MinMax rangeB, CollisionInfo info) {
         if (rangeA.max > rangeB.max || rangeA.min < rangeB.min) info.shapeAContained = false;
         if (rangeB.max > rangeA.max || rangeB.min < rangeA.min) info.shapeBContained = false;
+    }
+
+    /* getter/setter */
+
+    //getting the Polygon2D as a Polygon object
+    protected Polygon getPolygon() {
+        //getting the transformed values
+        Polygon2D transformed = (Polygon2D) getTransformed();
+
+        //creating the int values
+        int nPoints = transformed.vertices.length;
+        int[] xPoints = new int[nPoints];
+        int[] yPoints = new int[nPoints];
+
+        //setting the vertices
+        for (int i = 0; i < nPoints; i++) {
+            xPoints[i] = (int) (transformed.vertices[i].x + this.position.x);
+            yPoints[i] = (int) (transformed.vertices[i].y + this.position.y);
+        }
+
+        //create and return the polygon
+        return new Polygon(xPoints, yPoints, nPoints);
     }
 
     /* basic methods */
