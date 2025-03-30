@@ -1,6 +1,7 @@
 package PhysicObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
+import Support.ColorMix;
 import Support.MinMax;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Vector2D;
@@ -21,21 +22,10 @@ public class Polygon2D extends Object2D implements Cloneable {
 
     /* constructors */
 
-    //creates polygon with vertices
-    public Polygon2D(Vector2D[] vertices) {
-        super();
-        this.vertices = vertices;
-    }
-
     //creates polygon with set values
-    public Polygon2D(Vector2D[] vertices, Vector2D position, Vector2D velocity, double scale, double rotation) {
-        super(position, velocity, scale, rotation);
+    public Polygon2D(Vector2D[] vertices, Vector2D position, Vector2D velocity, double scale, double rotation, double mass, ColorMix colorMix) {
+        super(position, velocity, scale, rotation, mass, colorMix);
         this.vertices = vertices;
-    }
-
-    //creates a standard polygon shape with a set number of sides
-    public Polygon2D(int sides, double radius) {
-        this(sides, radius, new Vector2D(), new Vector2D(), 1, 0);
     }
 
     //creates a polygon2D based on a polygon object
@@ -51,15 +41,20 @@ public class Polygon2D extends Object2D implements Cloneable {
         }
     }
 
-    //creates a standard polygon shape with a set number of sides
+    //creates a standard polygon shape with a set number of sides without given rotation and scale
     public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity) {
         this(sides, radius, position, velocity, 1, 0);
     }
 
-    //creates a standard polygon shape with a set number of sides
+    //creates a standard polygon shape with a set number of sides without mass and color-mix
     public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity, double scale, double rotation) {
+        this(sides, radius, position, velocity, scale, rotation, 1, ColorMix.BLACK_RIM);
+    }
+
+    //creates a standard polygon shape with a set number of sides
+    public Polygon2D(int sides, double radius, Vector2D position, Vector2D velocity, double scale, double rotation, double mass, ColorMix colorMix) {
         //sets super values
-        super(position, velocity, scale, rotation);
+        super(position, velocity, scale, rotation, mass, colorMix);
 
         //creates vertices array
         vertices = new Vector2D[sides];
@@ -155,16 +150,26 @@ public class Polygon2D extends Object2D implements Cloneable {
     //paint polygon
     @Override
     public void paint(Graphics2D g) {
+        //get transformed poly
         Polygon poly = getPolygon();
 
-        //set color
-        g.setColor(Color.BLACK);
+        //paint fill color
+        if (colorMix.fill != null) {
+            g.setColor(colorMix.fill);
+            g.fillPolygon(poly);
+        }
 
-        //paint polygon
-        g.drawPolygon(poly);
+        //paint middle point / position
+        if (colorMix.middlePoint != null ) {
+            g.setColor(colorMix.middlePoint);
+            g.fillOval((int) (this.position.x - 4), (int) (this.position.y - 4), 8, 8);
+        }
 
-        //paint middle point
-        g.fillOval((int) (this.position.x - 4), (int) (this.position.y - 4), 8, 8);
+        //paint rim
+        if (colorMix.border != null) {
+            g.setColor(colorMix.border);
+            g.drawPolygon(poly);
+        }
     }
 
     /* collision checks */

@@ -1,5 +1,7 @@
 package PhysicObjects2D;
 
+import Support.ColorMix;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -9,25 +11,29 @@ public abstract class Object2D implements Cloneable {
 
     public Vector2D position, velocity;
     protected double scale, rotation;
+    protected ColorMix colorMix;
+    protected double mass;
 
     /* constructors */
 
     //crates a new object with the position and velocity being 0
     public Object2D() {
-        this(new Vector2D(), new Vector2D(), 1, 0);
-    }
-
-    //creates a new object with the position based on the x and y values and a velocity of 0
-    public Object2D(double x, double y) {
-        this(new Vector2D(x, y), new Vector2D(), 1, 0);
+        this(new Vector2D(), new Vector2D(), 1, 0, 1, ColorMix.BLACK_RIM);
     }
 
     //crestes a new object with the position and velocity being set by the parameters
     public Object2D(Vector2D position, Vector2D velocity, double scale, double rotation) {
+        this(position, velocity, scale, rotation, 1, ColorMix.BLACK_RIM);
+    }
+
+    //crestes a new object with the position and velocity being set by the parameters
+    public Object2D(Vector2D position, Vector2D velocity, double scale, double rotation, double mass, ColorMix colorMix) {
         this.position = position;
         this.velocity = velocity;
         this.scale = scale;
         this.rotation = rotation;
+        this.mass = mass;
+        this.colorMix = colorMix;
     }
 
     /* public methods */

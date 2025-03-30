@@ -1,6 +1,7 @@
 package PhysicObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
+import Support.ColorMix;
 import Support.MinMax;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Vector2D;
@@ -16,19 +17,18 @@ public class Circle2D extends Object2D implements Cloneable{
     /* constructors */
 
     //creates circle with set radius
-    public Circle2D (double radius) {
-        super();
-        this.radius = radius;
-    }
-
-    //creates circle with set radius
     public Circle2D (double radius, Vector2D position, Vector2D velocity) {
         this(radius, position, velocity, 1, 0);
     }
 
     //creates circle with set radius
     public Circle2D (double radius, Vector2D position, Vector2D velocity, double scale, double rotation) {
-        super(position, velocity, scale, rotation);
+        this(radius, position, velocity, scale, rotation, 1, ColorMix.BLACK_RIM);
+    }
+
+    //creates circle with set radius
+    public Circle2D (double radius, Vector2D position, Vector2D velocity, double scale, double rotation, double mass, ColorMix colorMix) {
+        super(position, velocity, scale, rotation, mass, colorMix);
         this.radius = radius;
     }
 
@@ -68,17 +68,30 @@ public class Circle2D extends Object2D implements Cloneable{
 
     @Override
     public void paint(Graphics2D g) {
+        //get transformed values
         Circle2D circle = (Circle2D) this.getTransformed();
 
-        g.setColor(Color.BLACK);
-
+        //process values
         Vector2D start = circle.position.sub(new Vector2D(circle.radius, circle.radius));
         double diameter = circle.radius * 2;
 
-        g.drawOval((int) start.x,(int) start.y,(int) diameter,(int) diameter);
+        //paint fill
+        if (colorMix.fill != null) {
+            g.setColor(colorMix.fill);
+            g.fillOval((int) start.x,(int) start.y,(int) diameter,(int) diameter);
+        }
 
-        //paint middle point
-        g.fillOval((int)(circle.position.x - 4), (int) (circle.position.y - 4), 8, 8);
+        //paint middle point (radius needs to be bigger than 10 for the middle point to make sense)
+        if (colorMix.middlePoint != null && diameter >= 20) {
+            g.setColor(colorMix.middlePoint);
+            g.fillOval((int)(circle.position.x - 4), (int) (circle.position.y - 4), 8, 8);
+        }
+
+        //paint rim
+        if (colorMix.border != null) {
+            g.setColor(colorMix.border);
+            g.drawOval((int) start.x,(int) start.y,(int) diameter,(int) diameter);
+        }
     }
 
     /* collision checks */
