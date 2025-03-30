@@ -76,4 +76,22 @@ public abstract class Object2D implements Cloneable {
             throw new AssertionError();
         }
     }
+
+    /* getter/setter */
+
+    public double getScale() {
+        return scale;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
+    public double getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
+    }
 }

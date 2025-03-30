@@ -203,4 +203,44 @@ public class TestPolygon2D extends TestCase {
             assertEquals(polygon.vertices[i], clone.vertices[i]);
         }
     }
+
+    //tests if some vectors are inside the polygon
+    public void testContains(){
+        //creating a new polygon
+        Polygon2D polygon = new Polygon2D(3, 250, new Vector2D(312,315), new Vector2D(), 1 , 0);
+
+        //test1: two points, that are inside the Polygon
+        Vector2D vector1 = new Vector2D(311, 71);
+        Vector2D vector2 = new Vector2D(412.5, 327.2);
+
+        assertTrue(polygon.contains(vector1));
+        assertTrue(polygon.contains(vector2));
+
+        //test2: two points, that are outside the Polygon
+        vector1 = new Vector2D(411, 199);
+        vector2 = new Vector2D(147.2, 465.0);
+
+        assertFalse(polygon.contains(vector1));
+        assertFalse(polygon.contains(vector2));
+
+        //test3: a point, that is only inside the Polygon, if the rotation works
+        vector1 = new Vector2D(373, 112);
+
+        assertFalse(polygon.contains(vector1));
+
+        polygon.setRotation(15);
+
+        assertTrue(polygon.contains(vector1));
+
+        //test4: a point, that is only inside the Polygon, if the scale works
+        polygon.setRotation(0);
+
+        vector1 = new Vector2D(152.7, 473.6);
+
+        assertFalse(polygon.contains(vector1));
+
+        polygon.setScale(2);
+
+        assertTrue(polygon.contains(vector1));
+    }
 }

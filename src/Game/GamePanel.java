@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         Vector2D pos = new Vector2D(e.getPoint());
-        System.out.println(gameObjects.get(0).contains(pos));
+        System.out.println(gameObjects.get(1).contains(pos));
         System.out.println(pos);
     }
 

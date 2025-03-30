@@ -106,4 +106,29 @@ public class TestCircle2D extends TestCase {
         //check that the radii equal
         assertEquals(circle.radius, clone.radius);
     }
+
+    //tests if some vectors are inside the circle
+    public void testContains() {
+        //creating a circle object
+        Circle2D circle = new Circle2D(185, new Vector2D(626,233), new Vector2D());
+
+        //test1: checking if two points get recognised correctly as inside the circle
+        Vector2D vector1 = new Vector2D(469, 164);
+        Vector2D vector2 = new Vector2D(691.1, 308.3);
+
+        assertTrue(circle.contains(vector1));
+        assertTrue(circle.contains(vector2));
+
+        //test2: checking if two points get recognised correctly as outside the circle
+        vector1 = new Vector2D(435, 99);
+        vector2 = new Vector2D(609.12, 448.01);
+
+        assertFalse(circle.contains(vector1));
+        assertFalse(circle.contains(vector2));
+
+        //test3: check if a point, that can only be inside the circle if scale works correctly
+        circle.setScale(2);
+
+        assertTrue(circle.contains(vector1));
+    }
 }
