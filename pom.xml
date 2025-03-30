@@ -62,5 +62,12 @@
             <artifactId>commons-math3</artifactId>
             <version>3.5</version>
         </dependency>
+
+        <!-- Double Parsing -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.2-jre</version>
+        </dependency>
     </dependencies>
 </project>

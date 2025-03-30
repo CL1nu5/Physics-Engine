@@ -1,7 +1,7 @@
 package PhysicObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
-import PhysicObjects2D.MinMax;
+import Support.MinMax;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Vector2D;
 
@@ -72,7 +72,7 @@ public class Polygon2D extends Object2D implements Cloneable {
 
         //setup for creating the poly
         double rotationPerPoint = (Math.PI * 2) / sides;
-        double angle = 0;
+        double angle;
 
         //loop to generate each point
         for (int i = 0; i < sides; i++) {

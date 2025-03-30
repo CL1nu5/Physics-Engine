@@ -1,7 +1,7 @@
 package PhysicObjects2D.Objects;
 
 import PhysicObjects2D.CollisionInfo;
-import PhysicObjects2D.MinMax;
+import Support.MinMax;
 import PhysicObjects2D.Object2D;
 import PhysicObjects2D.Vector2D;
 
