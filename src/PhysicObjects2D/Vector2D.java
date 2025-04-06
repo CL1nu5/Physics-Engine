@@ -1,5 +1,9 @@
 package PhysicObjects2D;
 
+import org.apache.commons.math3.util.Precision;
+
+import java.awt.*;
+
 public class Vector2D implements Cloneable {
 
     /* values */
@@ -19,19 +23,78 @@ public class Vector2D implements Cloneable {
         this.y = y;
     }
 
+    //get vector from awt.Point class
+    public Vector2D(Point point) {
+        this(point.x, point.y);
+    }
+
     /* public methods */
 
     //returns the vector normalized
     public Vector2D normalize() {
-        double magnitude = Math.sqrt(x * x + y * y);
+        double magnitude = getDistance();
+
         if (magnitude == 0) {
             return new Vector2D(0, 0);
         }
+
         return new Vector2D(x / magnitude, y / magnitude);
     }
 
+    //returns the vector in the opposite direction
+    public Vector2D getOpposite() {
+        return new Vector2D(-1 * this.x, -1 * this.y);
+    }
+
+    //returns distance/magnitude
+    public double getDistance() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    //returns the distance to another vector
+    public double getDistance(Vector2D that) {
+        return Math.sqrt(getDistanceSq(that));
+    }
+
+    //returns the distance to another point squared
+    public double getDistanceSq(Vector2D that) {
+        double px = this.x - that.x;
+        double py = this.y - that.y;
+
+        return (px * px + py * py);
+    }
+
+    //returns a new vector based on the addition of both vectors
+    public Vector2D add(Vector2D that) {
+        return new Vector2D(this.x + that.x, this.y + that.y);
+    }
+
+    //returns a new vector based on the subtraction of the second vector from this vector
+    public Vector2D sub(Vector2D that) {
+        return new Vector2D(this.x - that.x, this.y - that.y);
+    }
+
+    //makes the dot product of two vectors
+    public double mul(Vector2D that) {
+        return (this.x * that.x) + (this.y * that.y);
+    }
+
+    //multiplies the vector by a given multiplier
+    public Vector2D mul(double multiplier) {
+        return new Vector2D(this.x * multiplier, this.y * multiplier);
+    }
+
+    //rounds the x and y value to the nth digit
+    public Vector2D round(int digit) {
+        return new Vector2D(Precision.round(x, digit), Precision.round(y, digit));
+    }
 
     /* basic methods */
+
+    //returns the vector as an awt.Point
+    public Point toPoint() {
+        return new Point((int) this.x, (int) this.y);
+    }
 
     //clones the vector
     @Override
@@ -62,6 +125,6 @@ public class Vector2D implements Cloneable {
     //returns a string of the vector: [x="x-value";y="y-value"]
     @Override
     public String toString() {
-        return "[x=" + x + ";y=" + y + "y]";
+        return "[x=" + x + ";y=" + y + "]";
     }
 }
