@@ -1,20 +1,26 @@
 package Graphics;
 
 
+import Listeners.KeyListener;
+import Listeners.MouseListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 import java.awt.*;
+import java.nio.IntBuffer;
 import java.util.Objects;
 
 
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
 
@@ -86,6 +92,31 @@ public class Window {
             throw new IllegalStateException("Failed to create the GLFW window.");
         }
 
+        // Get the thread stack and push a new frame
+        try ( MemoryStack stack = stackPush() ) {
+            IntBuffer pWidth = stack.mallocInt(1); // int*
+            IntBuffer pHeight = stack.mallocInt(1); // int*
+
+            // Get the window size passed to glfwCreateWindow
+            glfwGetWindowSize(window, pWidth, pHeight);
+
+            // Get the resolution of the primary monitor
+            GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            // Center the window
+            glfwSetWindowPos(
+                    window,
+                    (vidMode.width() - pWidth.get(0)) / 2,
+                    (vidMode.height() - pHeight.get(0)) / 2
+            );
+        }
+
+        // set listener
+        glfwSetCursorPosCallback(window, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(window, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(window, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(window, KeyListener::keyCallback);
+
         // make the OpenGL context current
         glfwMakeContextCurrent(window);
         // enable v-sync
@@ -99,14 +130,19 @@ public class Window {
     }
 
     private void loop() {
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
         while (!glfwWindowShouldClose(window)) {
+            // Set the clear color
+
+            // clear the frame buffer
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            //swap the color buffers
+            glfwSwapBuffers(window);
+
             // poll events
             glfwPollEvents();
-
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            glfwSwapBuffers(window);
         }
     }
 }
